@@ -1,38 +1,29 @@
-FROM eclipse-temurin:11 AS compiler
+# use gradle 7.6, jdk-11
+FROM gradle:7.6-jdk11 AS builder
+WORKDIR /home/gradle/project
 
-ENV GRADLE_VERSION=7.6.1
-ENV GRADLE_HOME=/opt/gradle
-ENV PATH=${PATH}:${GRADLE_HOME}/bin
-
-RUN apt-get update && \
-    apt-get install -y wget unzip && \
-    wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip && \
-    mkdir -p ${GRADLE_HOME} && \
-    unzip -d /opt gradle-${GRADLE_VERSION}-bin.zip && \
-    ln -s /opt/gradle-${GRADLE_VERSION} ${GRADLE_HOME} && \
-    rm gradle-${GRADLE_VERSION}-bin.zip && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-WORKDIR /project
-
+# Copy all project files into the container
 COPY . .
 
-RUN if [ -f "./gradlew" ]; then chmod +x ./gradlew; fi
+# Update the package lists to fetch the latest versions of available packages
+RUN apt-get update
 
-RUN if [ -f "./gradlew" ]; then \
-        ./gradlew --no-daemon war || ./gradlew --no-daemon build; \
-    else \
-        gradle --no-daemon war || gradle --no-daemon build; \
-    fi
+# Installing dependencies
+RUN apt-get install -y python3 python3-pip curl unzip
 
-FROM tomcat:9-jre11-temurin-focal
+# Cleaning up the cache to reduce image size
+RUN apt-get clean
 
-RUN rm -rf /usr/local/tomcat/webapps/*
+# Clean and build project, without daemon
+RUN gradle clean build --no-daemon --refresh-dependencies
 
-COPY --from=compiler /project/build/libs/*.war /usr/local/tomcat/webapps/ROOT.war
+FROM tomcat:9-jre11
 
-ENV CATALINA_OPTS="-Xms512m -Xmx1024m"
+# Working dir inside tomcat container
+WORKDIR /usr/local/tomcat/webapps
+RUN rm -rf ROOT
+# Copy war file 
+COPY --from=builder /home/gradle/project/build/libs/*.war ./ROOT.war
+
+# Expose port 8080
 EXPOSE 8080
-
-CMD ["catalina.sh", "run"]
