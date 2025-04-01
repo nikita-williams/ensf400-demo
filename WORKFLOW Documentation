@@ -1,0 +1,25 @@
+ENSF 400 - Winter 2025 - Course Project
+
+Group Members:
+
+Aisha Farooq
+
+Nikita Williams
+
+Devante Kwizera
+
+Moyosore Ogunjobi 
+
+Github Repo Link: https://github.com/nikita-williams/ensf400-demo
+Docker Hub Image Repo: https://hub.docker.com/r/kdevante44/group27
+
+
+
+GITHUB WORKFLOW AND COLLABORATION
+We created a new repo, downloaded the code from original project repo and added the code to our repo. We then used git branching to create branches for a more streamlined workflow.
+
+•	master branch - stable code to be deployed
+•	develop branch - development before merging to the master branch
+•	<feature name> branch - individual feature development
+
+
