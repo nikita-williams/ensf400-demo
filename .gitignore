@@ -76,5 +76,4 @@ node_modules/
 .classpath
 .project
 .settings/
-
-echo "jenkins_home/" >> .gitignore
+jenkins_home/
