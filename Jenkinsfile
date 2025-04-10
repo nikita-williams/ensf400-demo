@@ -3,7 +3,7 @@ pipeline {
     
     // environment {
     //     DOCKER_HUB_CREDS = credentials('docker-hub-credentials')
-    //     DOCKER_IMAGE_NAME = "kdevante/ensf400-demo"
+    //     DOCKER_IMAGE_NAME = "username/image"
     //     DOCKER_IMAGE_TAG = "${env.GIT_COMMIT.take(7)}"
     // }
     
