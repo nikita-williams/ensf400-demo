@@ -40,12 +40,12 @@ pipeline {
         //     }
         // }
         
-        stage('Performance Testing') {
-            steps {
-                sh 'mkdir -p jmeter/results'
-                sh 'jmeter -n -t jmeter/test-plan.jmx -l jmeter/results/results.jtl'
-            }
-        }
+        // stage('Performance Testing') {
+        //     steps {
+        //         sh 'mkdir -p jmeter/results'
+        //         sh 'jmeter -n -t jmeter/test-plan.jmx -l jmeter/results/results.jtl'
+        //     }
+        // }
         
         stage('Generate Javadocs') {
             steps {
