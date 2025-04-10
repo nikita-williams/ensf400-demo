@@ -1,11 +1,11 @@
 pipeline {
     agent any
     
-    environment {
-        DOCKER_HUB_CREDS = credentials('docker-hub-credentials')
-        DOCKER_IMAGE_NAME = "kdevante/ensf400-demo"
-        DOCKER_IMAGE_TAG = "${env.GIT_COMMIT.take(7)}"
-    }
+    // environment {
+    //     DOCKER_HUB_CREDS = credentials('docker-hub-credentials')
+    //     DOCKER_IMAGE_NAME = "kdevante/ensf400-demo"
+    //     DOCKER_IMAGE_TAG = "${env.GIT_COMMIT.take(7)}"
+    // }
     
     stages {
         stage('Checkout') {
@@ -32,13 +32,13 @@ pipeline {
             }
         }
         
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh './gradlew sonarqube'
-                }
-            }
-        }
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         withSonarQubeEnv('SonarQube') {
+        //             sh './gradlew sonarqube'
+        //         }
+        //     }
+        // }
         
         stage('Performance Testing') {
             steps {
@@ -53,20 +53,20 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image') {
-            steps {
-                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
-                sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_NAME}:latest"
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+        //         sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_NAME}:latest"
+        //     }
+        // }
         
-        stage('Push Docker Image') {
-            steps {
-                sh "echo $DOCKER_HUB_CREDS_PSW | docker login -u $DOCKER_HUB_CREDS_USR --password-stdin"
-                sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-                sh "docker push ${DOCKER_IMAGE_NAME}:latest"
-            }
-        }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         sh "echo $DOCKER_HUB_CREDS_PSW | docker login -u $DOCKER_HUB_CREDS_USR --password-stdin"
+        //         sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+        //         sh "docker push ${DOCKER_IMAGE_NAME}:latest"
+        //     }
+        // }
         
         stage('Deploy') {
             steps {
