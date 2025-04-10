@@ -1,7 +1,6 @@
-FROM jenkins/jenkins:alpine
+FROM jenkins/jenkins:lts-jdk17
 
 USER root
-RUN apk add --no-cache openjdk11
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk
-ENV PATH $JAVA_HOME/bin:$PATH
+RUN apt-get update && apt-get install -y openjdk-11-jdk
+ENV JAVA_HOME_11=/usr/lib/jvm/java-11-openjdk
 USER jenkins
