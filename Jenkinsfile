@@ -69,10 +69,10 @@ pipeline {
         // }
         
         stage('Deploy') {
-      steps {
-        echo 'Simulating deploy to production...'
-        sh 'sleep 5'
-      }
+        steps {
+           echo 'Simulating deploy to production...'
+           sh 'sleep 5'
+        }
         }
     }
     
