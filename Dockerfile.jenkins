@@ -1,18 +1,7 @@
-# Use the official Jenkins LTS image
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:alpine
 
 USER root
-
-# Install Docker CLI inside Jenkins container
-RUN apt-get update && \
-    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release docker.io && \
-    usermod -aG docker jenkins
-
-# Optional: Install git, if not already included
-RUN apt-get install -y git
-
-# Optional: Clean up cache to reduce image size
-RUN apt-get clean
-
-# Switch back to Jenkins user
+RUN apk add --no-cache openjdk11
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk
+ENV PATH $JAVA_HOME/bin:$PATH
 USER jenkins
