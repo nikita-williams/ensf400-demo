@@ -69,10 +69,10 @@ pipeline {
         // }
         
         stage('Deploy') {
-            steps {
-                sh "docker-compose down || true"
-                sh "docker-compose up -d app"
-            }
+      steps {
+        echo 'Simulating deploy to production...'
+        sh 'sleep 5'
+      }
         }
     }
     
