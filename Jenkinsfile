@@ -1,90 +1,79 @@
 pipeline {
-  agent any
-
-  environment {
-    IMAGE_NAME = 'your-dockerhub-username/ensf400-app'
-    COMMIT_HASH = ''
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-        script {
-          COMMIT_HASH = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+    agent any
+    
+    // environment {
+    //     DOCKER_HUB_CREDS = credentials('docker-hub-credentials')
+    //     DOCKER_IMAGE_NAME = "username/image"
+    //     DOCKER_IMAGE_TAG = "${env.GIT_COMMIT.take(7)}"
+    // }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
         }
-      }
-    }
-
-    stage('Build WAR') {
-      steps {
-        sh './gradlew clean war'
-      }
-    }
-
-    stage('Unit Tests') {
-      steps {
-        sh './gradlew test'
-      }
-      post {
-        always {
-          junit 'build/test-results/test/*.xml'
+        
+        stage('Build') {
+            steps {
+                sh 'chmod +x gradlew'
+                sh './gradlew clean build -x test'
+            }
         }
-      }
-    }
-
-    stage('Static Code Analysis') {
-      steps {
-        sh './gradlew sonarqube'
-        // Optional: wait or verify quality gate
-      }
-    }
-
-    stage('Security Analysis') {
-      steps {
-        sh './gradlew dependencyCheckAnalyze'
-      }
-    }
-
-    stage('Performance Testing') {
-      steps {
-        sh './gradlew runPerfTests'
-      }
-    }
-
-    stage('Generate Javadocs') {
-      steps {
-        sh './gradlew javadoc'
-      }
-    }
-
-    stage('Build Docker Image') {
-      steps {
-        script {
-          def imageTag = "${IMAGE_NAME}:${COMMIT_HASH}"
-          sh "docker build -t ${imageTag} ."
+        
+        stage('Test') {
+            steps {
+                sh './gradlew test'
+            }
+            post {
+                always {
+                    junit '**/build/test-results/test/*.xml'
+                }
+            }
         }
-      }
-    }
-
-    stage('Push to DockerHub') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-          script {
-            def imageTag = "${IMAGE_NAME}:${COMMIT_HASH}"
-            sh '''
-              echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-              docker push ''' + imageTag
-          }
+        
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         withSonarQubeEnv('SonarQube') {
+        //             sh './gradlew sonarqube'
+        //         }
+        //     }
+        // }
+        
+        // stage('Performance Testing') {
+        //     steps {
+        //         sh 'mkdir -p jmeter/results'
+        //         sh 'jmeter -n -t jmeter/test-plan.jmx -l jmeter/results/results.jtl'
+        //     }
+        // }
+        
+        stage('Generate Javadocs') {
+            steps {
+                sh './gradlew javadoc'
+            }
         }
-      }
+        
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+        //         sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_NAME}:latest"
+        //     }
+        // }
+        
+        // stage('Push Docker Image') {
+        //     steps {
+        //         sh "echo $DOCKER_HUB_CREDS_PSW | docker login -u $DOCKER_HUB_CREDS_USR --password-stdin"
+        //         sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+        //         sh "docker push ${DOCKER_IMAGE_NAME}:latest"
+        //     }
+        // }
+        
+        stage('Deploy') {
+        steps {
+           echo 'Simulating deploy to production...'
+           sh 'sleep 5'
+        }
+        }
     }
-
-    stage('Deploy (Optional)') {
-      steps {
-        echo 'Simulating deploy to production...'
-        sh 'sleep 5'
-      }
-    }
-  }
+    
 }

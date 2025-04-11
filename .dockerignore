@@ -1,0 +1,14 @@
+.gradle
+build
+.gitattribute
+.git
+.gitignore
+LICENSE
+DIRECTORY_README.txt
+README.md
+
+# folders
+desktop_app/
+jenkins/
+
+jenkins_home
