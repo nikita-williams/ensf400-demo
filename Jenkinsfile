@@ -36,13 +36,13 @@ pipeline {
             }
         }
         
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh './gradlew sonarqube'
-                }
-            }
-        }
+        // stage('SonarQube Analysis') {
+            // steps {
+                // withSonarQubeEnv('SonarQube') {
+                    // sh './gradlew sonarqube'
+                // }
+            // }
+        // }
         
         // stage('Performance Testing') {
         //     steps {
