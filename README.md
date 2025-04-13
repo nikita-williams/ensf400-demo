@@ -183,3 +183,15 @@ For example, to set it all up on a [local Windows box](https://raw.githubusercon
 ![SonarQube analysis](https://c2.staticflickr.com/8/7823/33202009548_e678128200_b.jpg)
 
 ![Running performance tests](https://c2.staticflickr.com/8/7854/47077017751_7e045f68dd_b.jpg)
+
+
+# Nikita Williams
+Starting Process:
+
+Firstly, we decided to clone the existing open-source repository and had all made commits and we created branches to ensure our Git workflows worked.
+
+We had done this by using the git checkout to create another branch. We created 2 other branches, one development branch and one feature branch to try out different techniques and ideas before pushing our results to main.
+
+We constantly created pull requests to ensure that there were no merge conflicts and to make sure everyone knew what they were doing.
+
+We then containerized our project to 
