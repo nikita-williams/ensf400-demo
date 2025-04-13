@@ -175,7 +175,7 @@ For example, to set it all up on a [local Windows box](https://raw.githubusercon
 
 ---
 
-## Screenshotss:
+## Screenshots:
 ![Jenkins pipeline](https://c2.staticflickr.com/8/7889/33202009658_11422b7f20_b.jpg)
 
 ![Zap attach proxy](https://c2.staticflickr.com/8/7905/33202009438_8f367e20ec_o.png)
