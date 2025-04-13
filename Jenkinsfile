@@ -6,6 +6,10 @@ pipeline {
     //     DOCKER_IMAGE_NAME = "username/image"
     //     DOCKER_IMAGE_TAG = "${env.GIT_COMMIT.take(7)}"
     // }
+
+    triggers {
+    githubPush()
+    }
     
     stages {
         stage('Checkout') {
