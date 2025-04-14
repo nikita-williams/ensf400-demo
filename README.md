@@ -185,7 +185,7 @@ For example, to set it all up on a [local Windows box](https://raw.githubusercon
 ![Running performance tests](https://c2.staticflickr.com/8/7854/47077017751_7e045f68dd_b.jpg)
 
 
-# Nikita Williams
+# Our Documentation Process
 Starting Process:
 
 Firstly, we decided to clone the existing open-source repository and had all made commits and we created branches to ensure our Git workflows worked.
@@ -194,4 +194,16 @@ We had done this by using the git checkout to create another branch. We created 
 
 We constantly created pull requests to ensure that there were no merge conflicts and to make sure everyone knew what they were doing.
 
-We then containerized our project to 
+Containerization:
+
+We then containerized our project to be able to run our program with already existing packages we created. We did this by containerizing our project and
+then creating our image and then using docker build to be able to upload our containerized program to DockerHub.
+
+Jenkins:
+
+ We then integrated our GitHub with Jenkins. We did this by first creating a token so that our program is able to be accessed by Jenkins and then we used it when configuring our Jenkins so that it is able to run our container. We created a new pipeline to check and see if our container can run and it was able to do so successfully. 
+
+Webhooks:
+
+We then integrated webhooks to be able to run jenkins automatically so it could build a test the code that was pushed to GitHub.
+Also the pipeline in Jenkins ran the Sonarqube code static analysis.
